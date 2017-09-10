@@ -8,6 +8,14 @@ const oauth2Client = new OAuth2(
 oauth2Client.setCredentials({ refresh_token: '1/BAu1PVACzaZMIR_m9xTXOL-IwxBJEwU1Vsfw2TwcTIU' });
 
 exports.handler = (req, res) => {
+  if (req.method === 'OPTIONS') {
+    res
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Access-Control-Allow-Methods', 'POST')
+      .sendStatus(200);
+    return;
+  }
+
   const {
     amount,
     charging,
