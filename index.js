@@ -12,6 +12,7 @@ exports.handler = (req, res) => {
     res
       .set('Access-Control-Allow-Origin', '*')
       .set('Access-Control-Allow-Methods', 'POST')
+      .set('Access-Control-Allow-Headers', 'Content-Type')
       .sendStatus(200);
     return;
   }
@@ -140,6 +141,8 @@ exports.handler = (req, res) => {
   };
 
   oauth2Client.refreshAccessToken(() => {
-    sheets.spreadsheets.batchUpdate(request, () => res.status(200).send());
+    sheets.spreadsheets.batchUpdate(request, () =>
+      res.set('Access-Control-Allow-Origin', '*').sendStatus(200)
+    );
   });
 };
