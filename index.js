@@ -82,7 +82,7 @@ exports.handler = (req, res) => {
                   },
                   {
                     userEnteredValue: {
-                      numberValue: amount
+                      stringValue: amount
                     }
                   },
                   {
