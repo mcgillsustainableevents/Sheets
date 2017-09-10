@@ -1,4 +1,5 @@
-exports.handler = (event, context, callback) => {
+exports.handler = (req, res) => {
+  console.log(req);
   const {
     amount,
     charging,
@@ -14,7 +15,7 @@ exports.handler = (event, context, callback) => {
     score,
     sponsored,
     supplies
-  } = JSON.parse(event.body);
+  } = JSON.parse(req.body);
 
   var google = require('googleapis');
   var OAuth2 = google.auth.OAuth2;
@@ -29,7 +30,6 @@ exports.handler = (event, context, callback) => {
 
   oauth2Client.refreshAccessToken((err, tokens) => {
     var sheets = google.sheets('v4');
-
     var request = {
       auth: oauth2Client,
       spreadsheetId: '1PjJWQAnZhq4oy1OF2yKclt5LWy79eX5DZOm_dzdW36Y',
@@ -115,11 +115,6 @@ exports.handler = (event, context, callback) => {
                       userEnteredValue: {
                         stringValue: score
                       }
-                    },
-                    {
-                      userEnteredValue: {
-                        stringValue: checked
-                      }
                     }
                   ]
                 }
@@ -135,13 +130,12 @@ exports.handler = (event, context, callback) => {
         ]
       }
     };
-
     sheets.spreadsheets.batchUpdate(request, (err, response) => {
-      callback(null, {
-        statusCode: 200,
-        headers: { 'Access-Control-Allow-Origin': '*' },
-        body: 'success'
-      });
+      res.status(200).send(
+        JSON.stringify({
+          body: 'Success!'
+        })
+      );
     });
   });
 };
